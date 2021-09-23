@@ -19,14 +19,17 @@ interface MyIngredients {
     meat: number
 }
 
+export type QuantityKey = keyof MyQuantityCheck;
+
+
 export interface MyQuantityCheck {
   salad: boolean,
   bacon: boolean,
   cheese: boolean,
   meat: boolean
-}
+} 
 
-type IngKey = keyof MyIngredients;
+export type IngKey = keyof MyIngredients;
 
 const INGREDIENT_PRICES = {
   salad: 0.5,
@@ -86,7 +89,7 @@ class BurgerBuilder extends Component<MyProps, MyState> {
         ...this.state.ingredients
       };
 
-      let key: IngKey;
+      let key: QuantityKey;
       
       //initializing new object to check if amount is greater then 0
       let quantityCheck: MyQuantityCheck = {

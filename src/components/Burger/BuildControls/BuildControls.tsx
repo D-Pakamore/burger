@@ -1,25 +1,35 @@
 import React from "react";
-import { MyQuantityCheck } from "../../../containers/BurgerBuilder/BurgerBuilder";
+import { MyQuantityCheck, QuantityKey } from "../../../containers/BurgerBuilder/BurgerBuilder";
 import classes from './BuildControls.module.css';
 import BuildControl from './BuildControl/BuildControl';
+import IngKey from '../../../containers/BurgerBuilder/BurgerBuilder';
 
 interface BuildControlsProps {
   // disabled: MyQuantityCheck, disabled interface, needs typeof "keys"
-  disabled: any;
+  disabled: QuantityKey;
   ingredientRemoved(type: string): void;
   ingredientAdded(type: string): void;
 }
 
-const controls = [
+const controls: { label: string, type: string }[] = [
   { label: 'Salad', type: 'salad'},
   { label: 'Bacon', type: 'bacon'},
   { label: 'Cheese', type: 'cheese'},
   { label: 'Meat', type: 'meat'},
 ];
 
+interface controlsInterface {
+  label: string,
+  type: string
+}
+
+
+
+
+
 const buildControls = (props: BuildControlsProps) => (
   <div className={classes.BuildControls}>
-      {controls.map(ctrl => (
+      {controls.map((ctrl: controlsInterface) => (
         <BuildControl
             key={ctrl.label} 
             label={ctrl.label}
