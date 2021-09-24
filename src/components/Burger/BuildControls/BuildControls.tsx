@@ -2,11 +2,12 @@ import React from "react";
 import { MyQuantityCheck, QuantityKey } from "../../../containers/BurgerBuilder/BurgerBuilder";
 import classes from './BuildControls.module.css';
 import BuildControl from './BuildControl/BuildControl';
-import IngKey from '../../../containers/BurgerBuilder/BurgerBuilder';
 
 interface BuildControlsProps {
   // disabled: MyQuantityCheck, disabled interface, needs typeof "keys"
-  disabled: QuantityKey;
+  disabled: MyQuantityCheck;
+  price: number;
+  purchasable: boolean;
   ingredientRemoved(type: string): void;
   ingredientAdded(type: string): void;
 }
@@ -20,8 +21,10 @@ const controls: { label: string, type: string }[] = [
 
 interface controlsInterface {
   label: string,
-  type: string
+  type: string 
 }
+
+
 
 
 
@@ -29,6 +32,7 @@ interface controlsInterface {
 
 const buildControls = (props: BuildControlsProps) => (
   <div className={classes.BuildControls}>
+    <p>Current Price: <strong>{props.price.toFixed(2)}</strong></p>
       {controls.map((ctrl: controlsInterface) => (
         <BuildControl
             key={ctrl.label} 
@@ -37,6 +41,8 @@ const buildControls = (props: BuildControlsProps) => (
             removed={() => props.ingredientRemoved(ctrl.type)}
             disabled={props.disabled[ctrl.type]}/>
       ))}
+      <button className={classes.OrderButton}
+      disabled={!props.purchasable}>ORDER NOW</button>
   </div>
 );
 

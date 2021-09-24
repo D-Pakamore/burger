@@ -3,39 +3,40 @@ import { Component } from "react";
 import MyAux from "../../hoc/MyAux";
 import Burger from "../../components/Burger/Burger";
 import BuildControls from '../../components/Burger/BuildControls/BuildControls';
+import Modal from '../../components/UI/Modal/Modal';
+import OrderSummary from '../../components/Burger/OrderSummary/OrderSummary'
 
 interface MyProps {
 }
 
 interface MyState {
   ingredients: MyIngredients,
-  totalPrice: number
+  totalPrice: number, 
+  purchasable: boolean
 }
 
 interface MyIngredients {
-    salad: number,
-    bacon: number,
-    cheese: number,
-    meat: number
+  [key: string]: number;
 }
 
 export type QuantityKey = keyof MyQuantityCheck;
 
 
 export interface MyQuantityCheck {
-  salad: boolean,
-  bacon: boolean,
-  cheese: boolean,
-  meat: boolean
+  [key: string]: boolean;
 } 
 
 export type IngKey = keyof MyIngredients;
 
-const INGREDIENT_PRICES = {
+const INGREDIENT_PRICES: IngredientPricesInterface = {
   salad: 0.5,
   cheese: 0.4,
   meat: 1.3,
   bacon: 0.7
+}
+
+interface IngredientPricesInterface {
+  [key: string]: number;
 }
 
 class BurgerBuilder extends Component<MyProps, MyState> {
@@ -47,7 +48,21 @@ class BurgerBuilder extends Component<MyProps, MyState> {
       cheese: 0,
       meat: 0
     },
-    totalPrice: 4
+    totalPrice: 4,
+    purchasable: false 
+  }
+
+  updatePurchaseState(ingredients: { [x: string]: number; }) {
+
+    const sum = Object.keys(ingredients)
+      .map(igKey => {
+        return ingredients[igKey]
+      })
+      .reduce((sum, el) => {
+        return sum + el
+      }, 0);
+      
+      this.setState({purchasable: sum > 0});
   }
 
   addIngredientHandler = (type: IngKey) => {
@@ -62,6 +77,7 @@ class BurgerBuilder extends Component<MyProps, MyState> {
     const oldPrice = this.state.totalPrice;
     const newPrice = oldPrice + priceAddition;
     this.setState({totalPrice: newPrice, ingredients: updatedIngredients});
+    this.updatePurchaseState(updatedIngredients);
   }
 
   removeIngredientHandler = (type: IngKey) => {
@@ -81,6 +97,7 @@ class BurgerBuilder extends Component<MyProps, MyState> {
     const oldPrice = this.state.totalPrice;
     const newPrice = oldPrice - priceDeduction;
     this.setState({totalPrice: newPrice, ingredients: updatedIngredients});
+    this.updatePurchaseState(updatedIngredients);
   }
 
   render () {
@@ -99,21 +116,29 @@ class BurgerBuilder extends Component<MyProps, MyState> {
         meat: false
       };
 
+      
+
       // changing value to false, if amount is 0 or less
       for (key in disabledInfo) {
         if (disabledInfo[key] <= 0) {
           quantityCheck[key] = true;
         }
       }
+
       
       
     return (
       <MyAux>
+        <Modal>
+          <OrderSummary ingredients={this.state.ingredients}/>
+        </Modal>
         <Burger ingredients={this.state.ingredients}/>
         <BuildControls
           ingredientAdded={this.addIngredientHandler}
           ingredientRemoved={this.removeIngredientHandler}
-          disabled={quantityCheck}/>
+          disabled={quantityCheck}
+          purchasable={this.state.purchasable}
+          price={this.state.totalPrice}/>
       </MyAux>
     );
   }

@@ -2,7 +2,7 @@ import React, { MouseEventHandler } from "react";
 import classes from './BuildControl.module.css';
 
 interface thisProps {
-  disabled: boolean;
+   disabled: boolean;
   removed: MouseEventHandler<HTMLButtonElement> | undefined;
   added: MouseEventHandler<HTMLButtonElement> | undefined;
   label: string;
