@@ -1,10 +1,45 @@
-import React from "react";
+import React, { Component } from "react";
 import classes from "./Modal.module.css";
+import { MyIngredients } from "../../../containers/BurgerBuilder/BurgerBuilder";
+import Aux from "../../../hoc/MyAux/MyAux";
+import Backdrop from "../Backdrop/Backdrop";
 
-const modal = (props: { children: boolean | React.ReactPortal | React.ReactChild | React.ReactFragment | null | undefined; }) => (
-  <div className={classes.Modal}>
-    {props.children}
-  </div>
-);
+interface ModalProps {
+  show: boolean;
+  children:
+    | boolean
+    | React.ReactPortal
+    | React.ReactChild
+    | React.ReactFragment
+    | null
+    | undefined;
+  modalClosed(): void;
 
-export default modal;
+  // props: { children: boolean | React.ReactPortal | React.ReactChild | React.ReactFragment | null | undefined; }
+}
+
+class Modal extends Component<ModalProps> {
+
+  shouldComponentUpdate(nextProps: { show: boolean; }, NextState: string) {
+    return nextProps.show !== this.props.show;
+  }
+
+  render() {
+    return (
+      <Aux>
+        <Backdrop show={this.props.show} clicked={this.props.modalClosed} />
+        <div
+          className={classes.Modal}
+          style={{
+            transform: this.props.show ? "translateY(0)" : "translateY(-100vh)",
+            opacity: this.props.show ? "1" : "0",
+          }}
+        >
+          {this.props.children}
+        </div>
+      </Aux>
+    );
+  }
+}
+
+export default Modal;
