@@ -13,15 +13,16 @@ interface ModalProps {
     | React.ReactFragment
     | null
     | undefined;
-  modalClosed(): void;
+  modalClosed?(): void;
+  clicked?(): void;
 
   // props: { children: boolean | React.ReactPortal | React.ReactChild | React.ReactFragment | null | undefined; }
 }
 
 class Modal extends Component<ModalProps> {
 
-  shouldComponentUpdate(nextProps: { show: boolean; }, NextState: string) {
-    return nextProps.show !== this.props.show;
+  shouldComponentUpdate(nextProps: ModalProps, NextState: string) {
+    return nextProps.show !== this.props.show || nextProps.children !== this.props.children;
   }
 
   render() {
