@@ -48,7 +48,3 @@ const burger = (props: TheseProps) => {
 };
 
 export default burger;
-
-function sum(arg0: any): any {
-  throw new Error("Function not implemented.");
-}

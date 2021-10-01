@@ -10,7 +10,11 @@ interface thisState {
   
 }
 
-const withErrorHandler = (WrappedComponent: React.ComponentClass, axios: AxiosInstance) => {
+interface wrappedCompInterface extends React.ComponentClass {
+
+} 
+
+const withErrorHandler = (WrappedComponent: wrappedCompInterface, axios: AxiosInstance) => {
   return class extends Component {
     state: thisState = {
       error: "",

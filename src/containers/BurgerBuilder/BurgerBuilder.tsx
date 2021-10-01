@@ -8,8 +8,11 @@ import OrderSummary from "../../components/Burger/OrderSummary/OrderSummary";
 import axios from "../../axios-orders";
 import Spinner from "../../components/UI/Spinner/Spinner";
 import withErrorHandler from "../../hoc/withErrorHandler/withErrorHandler";
+import { RouteComponentProps } from "react-router-dom";
 
-interface MyProps {}
+interface MyProps extends RouteComponentProps {
+
+}
 
 interface MyState {
   ingredients: MyIngredients | null;
@@ -103,28 +106,29 @@ class BurgerBuilder extends Component<MyProps, MyState> {
   };
 
   purchaseContinueHandler = () => {
-    this.setState({ loading: true });
-    const order = {
-      ingredients: this.state.ingredients,
-      price: this.state.totalPrice,
-      customer: {
-        name: "Deividas Pakamore",
-        address: {
-          street: "Vingio 13",
-          country: "Lithuania",
-        },
-        email: "mymail@stillmail.mai",
-      },
-      deliveryMethod: "fastest",
-    };
-    axios
-      .post("/orders.json", order)
-      .then((response) => {
-        this.setState({ loading: false, purchasing: false });
-      })
-      .catch((error) => {
-        this.setState({ loading: false, purchasing: false });
-      });
+    // this.setState({ loading: true });
+    // const order = {
+    //   ingredients: this.state.ingredients,
+    //   price: this.state.totalPrice,
+    //   customer: {
+    //     name: "Deividas Pakamore",
+    //     address: {
+    //       street: "Vingio 13",
+    //       country: "Lithuania",
+    //     },
+    //     email: "mymail@stillmail.mai",
+    //   },
+    //   deliveryMethod: "fastest",
+    // };
+    // axios
+    //   .post("/orders.json", order)
+    //   .then((response) => {
+    //     this.setState({ loading: false, purchasing: false });
+    //   })
+    //   .catch((error) => {
+    //     this.setState({ loading: false, purchasing: false });
+    //   });
+    this.props.history.push('/checkout');
   };
 
   removeIngredientHandler = (type: IngKey) => {
