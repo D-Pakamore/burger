@@ -10,11 +10,10 @@ import Spinner from "../../components/UI/Spinner/Spinner";
 import withErrorHandler from "../../hoc/withErrorHandler/withErrorHandler";
 import { RouteComponentProps } from "react-router-dom";
 
-interface MyProps extends RouteComponentProps {
-
+export interface MyProps extends RouteComponentProps {
 }
 
-interface MyState {
+export interface MyState {
   ingredients: MyIngredients | null;
   totalPrice: number;
   purchasable: boolean;
@@ -42,7 +41,7 @@ const INGREDIENT_PRICES: IngredientPricesInterface = {
   bacon: 0.7,
 };
 
-interface IngredientPricesInterface {
+export interface IngredientPricesInterface {
   [key: string]: number;
 }
 
@@ -53,7 +52,7 @@ class BurgerBuilder extends Component<MyProps, MyState> {
     purchasable: false,
     purchasing: false,
     loading: false,
-    error: false
+    error: false,
   };
 
   componentDidMount() {
@@ -106,29 +105,20 @@ class BurgerBuilder extends Component<MyProps, MyState> {
   };
 
   purchaseContinueHandler = () => {
-    // this.setState({ loading: true });
-    // const order = {
-    //   ingredients: this.state.ingredients,
-    //   price: this.state.totalPrice,
-    //   customer: {
-    //     name: "Deividas Pakamore",
-    //     address: {
-    //       street: "Vingio 13",
-    //       country: "Lithuania",
-    //     },
-    //     email: "mymail@stillmail.mai",
-    //   },
-    //   deliveryMethod: "fastest",
-    // };
-    // axios
-    //   .post("/orders.json", order)
-    //   .then((response) => {
-    //     this.setState({ loading: false, purchasing: false });
-    //   })
-    //   .catch((error) => {
-    //     this.setState({ loading: false, purchasing: false });
-    //   });
-    this.props.history.push('/checkout');
+    
+    const queryParams = [];
+    for (let i in this.state.ingredients) {
+      queryParams.push(encodeURIComponent(i) + '=' + encodeURIComponent(this.state.ingredients[i]));
+    }
+    queryParams.push('price=' + this.state.totalPrice);
+    const queryString = queryParams.join('&');
+
+    this.props.history.push({
+      pathname: '/checkout',
+      search: '?' + queryString
+    });
+
+    console.log(queryParams);
   };
 
   removeIngredientHandler = (type: IngKey) => {

@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import classes from "./Modal.module.css";
-import { MyIngredients } from "../../../containers/BurgerBuilder/BurgerBuilder";
 import Aux from "../../../hoc/MyAux/MyAux";
 import Backdrop from "../Backdrop/Backdrop";
 

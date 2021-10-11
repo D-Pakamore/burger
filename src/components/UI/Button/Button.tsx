@@ -4,7 +4,7 @@ import classes from './Button.module.css';
 interface ButtonInterface {
   btnType: string;
   children: ReactNode;
-  clicked(): void;
+  clicked(event: { preventDefault: () => void; }): void;
 }
 
 const button = (props: ButtonInterface) => (

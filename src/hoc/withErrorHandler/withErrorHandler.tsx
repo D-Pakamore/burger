@@ -1,8 +1,8 @@
 import { AxiosInstance } from "axios";
-import { any } from "prop-types";
 import React, { Component } from "react";
 import Modal from "../../components/UI/Modal/Modal";
 import MyAux from "../MyAux/MyAux";
+import { RouteComponentProps } from "react-router-dom";
 
 interface thisState {
   error: string | number,
@@ -10,12 +10,14 @@ interface thisState {
   
 }
 
-interface wrappedCompInterface extends React.ComponentClass {
+interface wrappedCompInterface extends React.ComponentClass<RouteComponentProps> {
 
 } 
 
+
+
 const withErrorHandler = (WrappedComponent: wrappedCompInterface, axios: AxiosInstance) => {
-  return class extends Component {
+  return class extends Component<RouteComponentProps> {
     state: thisState = {
       error: "",
       errorMessage: "you've got an error message damn...."
@@ -47,7 +49,7 @@ const withErrorHandler = (WrappedComponent: wrappedCompInterface, axios: AxiosIn
     render() {
       return (
         <MyAux>
-          <Modal show={this.state.error != "" ? true : false} modalClosed={this.errorConfirmedHandler}>{this.state.error ? this.state.error : null}</Modal>
+          <Modal show={this.state.error !== "" ? true : false} modalClosed={this.errorConfirmedHandler}>{this.state.error ? this.state.error : null}</Modal>
           <WrappedComponent {...this.props} />
         </MyAux>
       );
