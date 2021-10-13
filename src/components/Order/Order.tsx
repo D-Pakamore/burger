@@ -34,7 +34,7 @@ const order = (props: OrderProps) => {
     <div className={classes.Order}>
       <p>Ingredients: {ingredientOutput}</p>
       <p>
-        Price: <strong>EUR {props.price}</strong>
+        Price: <strong>EUR {Math.round(props.price * 100) / 100}</strong>
       </p>
     </div>
   );

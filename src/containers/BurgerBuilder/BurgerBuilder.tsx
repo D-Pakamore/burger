@@ -10,8 +10,7 @@ import Spinner from "../../components/UI/Spinner/Spinner";
 import withErrorHandler from "../../hoc/withErrorHandler/withErrorHandler";
 import { RouteComponentProps } from "react-router-dom";
 
-export interface MyProps extends RouteComponentProps {
-}
+export interface MyProps extends RouteComponentProps {}
 
 export interface MyState {
   ingredients: MyIngredients | null;
@@ -63,8 +62,8 @@ class BurgerBuilder extends Component<MyProps, MyState> {
       .then((response) => {
         this.setState({ ingredients: response.data });
       })
-      .catch(error => {
-        this.setState({error: true});
+      .catch((error) => {
+        this.setState({ error: true });
       });
   }
 
@@ -105,17 +104,20 @@ class BurgerBuilder extends Component<MyProps, MyState> {
   };
 
   purchaseContinueHandler = () => {
-    
     const queryParams = [];
     for (let i in this.state.ingredients) {
-      queryParams.push(encodeURIComponent(i) + '=' + encodeURIComponent(this.state.ingredients[i]));
+      queryParams.push(
+        encodeURIComponent(i) +
+          "=" +
+          encodeURIComponent(this.state.ingredients[i])
+      );
     }
-    queryParams.push('price=' + this.state.totalPrice);
-    const queryString = queryParams.join('&');
+    queryParams.push("price=" + this.state.totalPrice);
+    const queryString = queryParams.join("&");
 
     this.props.history.push({
-      pathname: '/checkout',
-      search: '?' + queryString
+      pathname: "/checkout",
+      search: "?" + queryString,
     });
 
     console.log(queryParams);
@@ -166,7 +168,13 @@ class BurgerBuilder extends Component<MyProps, MyState> {
 
     let orderSummary = null;
 
-    let burger = this.state.error ? <p style={{textAlign: "center", fontSize: "32px"}}>Ingredients can't be loaded, please try againt later!</p> : <Spinner />;
+    let burger = this.state.error ? (
+      <p style={{ textAlign: "center", fontSize: "32px" }}>
+        Ingredients can't be loaded, please try againt later!
+      </p>
+    ) : (
+      <Spinner />
+    );
 
     if (this.state.ingredients) {
       burger = (
