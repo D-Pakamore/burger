@@ -1,5 +1,5 @@
 import React, { MouseEventHandler } from "react";
-import {MyQuantityCheck} from "../../../containers/BurgerBuilder/BurgerBuilder";
+import { MyQuantityCheck } from "../../../containers/BurgerBuilder/BurgerBuilder";
 import classes from "./BuildControls.module.css";
 import BuildControl from "./BuildControl/BuildControl";
 

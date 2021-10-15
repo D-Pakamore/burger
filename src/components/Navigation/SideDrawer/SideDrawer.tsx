@@ -8,7 +8,6 @@ import Aux from "../../../hoc/MyAux/MyAux";
 interface sideDrawerProps {
   open: boolean;
   closed: MouseEventHandler<HTMLDivElement> | undefined;
-
 }
 
 const sideDrawer = (props: sideDrawerProps) => {
@@ -18,8 +17,8 @@ const sideDrawer = (props: sideDrawerProps) => {
   }
   return (
     <Aux>
-      <Backdrop show={props.open} clicked={props.closed}/>
-      <div className={attachedClasses.join(' ')}>
+      <Backdrop show={props.open} clicked={props.closed} />
+      <div className={attachedClasses.join(" ")}>
         <div className={classes.Logo}>
           <Logo />
         </div>

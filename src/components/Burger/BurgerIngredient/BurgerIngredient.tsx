@@ -13,27 +13,25 @@ const BurgerIngredient = (props: BurgerProps): React.ReactElement | null => {
 
   switch (props.type) {
     case "bread-bottom":
-      return ingredient = <div className={classes.BreadBottom}></div>;
+      return (ingredient = <div className={classes.BreadBottom}></div>);
     case "bread-top":
-      return ingredient = (
+      return (ingredient = (
         <div className={classes.BreadTop}>
           <div className={classes.Seeds1}></div>
           <div className={classes.Seeds2}></div>
         </div>
-      );
+      ));
     case "meat":
-      return ingredient = <div className={classes.Meat}></div>;
+      return (ingredient = <div className={classes.Meat}></div>);
     case "cheese":
-      return ingredient = <div className={classes.Cheese}></div>;
+      return (ingredient = <div className={classes.Cheese}></div>);
     case "salad":
-      return ingredient = <div className={classes.Salad}></div>;
+      return (ingredient = <div className={classes.Salad}></div>);
     case "bacon":
-      return ingredient = <div className={classes.Bacon}></div>;
+      return (ingredient = <div className={classes.Bacon}></div>);
     default:
-      return ingredient = null;
-
+      return (ingredient = null);
   }
-
 };
 
 export default BurgerIngredient;

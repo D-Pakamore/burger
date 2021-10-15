@@ -3,6 +3,7 @@ import React, { FormEvent } from "react";
 import classes from "./Input.module.css";
 
 interface InputProps {
+  touched: boolean;
   invalid: boolean;
   changed(
     event: FormEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
@@ -18,7 +19,7 @@ const input = (props: InputProps) => {
   let inputElement = null;
   const inputClasses = [classes.InputElement];
 
-  if (props.invalid) {
+  if (props.invalid && props.touched) {
     inputClasses.push(classes.Invalid);
   }
 
@@ -26,7 +27,7 @@ const input = (props: InputProps) => {
     case "input":
       inputElement = (
         <input
-          className={inputClasses.join(' ')}
+          className={inputClasses.join(" ")}
           {...props.elementConfig}
           value={props.value}
           onChange={props.changed}
@@ -36,7 +37,7 @@ const input = (props: InputProps) => {
     case "textarea":
       inputElement = (
         <textarea
-          className={inputClasses.join(' ')}
+          className={inputClasses.join(" ")}
           {...props.elementConfig}
           value={props.value}
           onChange={props.changed}
@@ -45,12 +46,13 @@ const input = (props: InputProps) => {
       break;
     case "select":
       inputElement = (
-        <select className={inputClasses.join(' ')} value={props.value} onChange={props.changed}>
+        <select
+          className={inputClasses.join(" ")}
+          value={props.value}
+          onChange={props.changed}
+        >
           {props.elementConfig.options.map((option) => (
-            <option
-              key={option.value}
-              value={option.value}
-            >
+            <option key={option.value} value={option.value}>
               {option.displayValue}
             </option>
           ))}
@@ -60,7 +62,7 @@ const input = (props: InputProps) => {
     default:
       inputElement = (
         <input
-          className={inputClasses.join(' ')}
+          className={inputClasses.join(" ")}
           {...props.elementConfig}
           value={props.value}
           onChange={props.changed}

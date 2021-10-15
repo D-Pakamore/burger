@@ -5,9 +5,8 @@ import withErrorHandler from "../../hoc/withErrorHandler/withErrorHandler";
 import { RouteComponentProps } from "react-router-dom";
 
 interface OrdersState {
-  orders: {id: string, price: number, ingredients: {}}[];
+  orders: { id: string; price: number; ingredients: {} }[];
   loading: boolean;
-
 }
 
 class Orders extends Component<RouteComponentProps, OrdersState> {
@@ -35,9 +34,11 @@ class Orders extends Component<RouteComponentProps, OrdersState> {
     return (
       <div>
         {this.state.orders.map((order) => (
-          <Order key={order.id}
-          ingredients={order.ingredients}
-          price={order.price} />
+          <Order
+            key={order.id}
+            ingredients={order.ingredients}
+            price={order.price}
+          />
         ))}
       </div>
     );

@@ -5,10 +5,7 @@ import { IngredientPricesInterface } from "../BurgerBuilder/BurgerBuilder";
 import { Route } from "react-router-dom";
 import ContactData from "../Checkout/ContactData/ContactData";
 
-interface CheckoutProps extends RouteComponentProps {
-}
-
-
+interface CheckoutProps extends RouteComponentProps {}
 
 class Checkout extends Component<CheckoutProps> {
   state = {
@@ -18,18 +15,18 @@ class Checkout extends Component<CheckoutProps> {
       bacon: 1,
       cheese: 1,
     },
-    price: 0
+    price: 0,
   };
 
   componentWillMount() {
     const query = new URLSearchParams(this.props.location.search);
     const ingredients: IngredientPricesInterface = {};
-    let price = '';
+    let price = "";
     for (let param of query.entries()) {
-      if (param[0] === 'price') {
+      if (param[0] === "price") {
         price = param[1];
       } else {
-      ingredients[param[0]] = +param[1];
+        ingredients[param[0]] = +param[1];
       }
     }
 
@@ -54,7 +51,12 @@ class Checkout extends Component<CheckoutProps> {
         />
         <Route
           path={this.props.match.path + "/contact-data"}
-          render={() => <ContactData ingredients={this.state.ingredients} price={this.state.price} />}
+          render={() => (
+            <ContactData
+              ingredients={this.state.ingredients}
+              price={this.state.price}
+            />
+          )}
         />
       </div>
     );

@@ -15,16 +15,16 @@ export interface MyProps extends RouteComponentProps {
 interface ContactDataState {
   loading: boolean;
   orderForm: OrderFormInterface;
+  formIsValid: boolean;
 }
 
 interface OrderFormInterface {
   [key: string]: {
-    [key: string]: {}
-    value: string,
+    [key: string]: {};
+    value: string;
     validation: {
-      required: boolean
-    },
-    formIsValid?: boolean
+      required: boolean;
+    };
   };
 }
 
@@ -36,6 +36,7 @@ interface FormElementsArrayInterface {
         elementConfig: { options: [{ value: string; displayValue: string }] };
         value: string;
         valid: boolean;
+        touched: boolean;
       };
       id: string;
     }) => JSX.Element
@@ -45,10 +46,10 @@ interface FormElementsArrayInterface {
     config: {
       elementType?: string;
       elementConfig?: { options: [] };
-      value: string,
+      value: string;
       validation: {
-      required: boolean
-    }
+        required: boolean;
+      };
     };
   }): void;
 }
@@ -66,9 +67,10 @@ class ContactData extends Component<MyProps, ContactDataState> {
         },
         value: "",
         validation: {
-          required: true
+          required: true,
         },
-        valid: true
+        valid: false,
+        touched: false,
       },
       street: {
         elementType: "input",
@@ -78,9 +80,10 @@ class ContactData extends Component<MyProps, ContactDataState> {
         },
         value: "",
         validation: {
-          required: true
+          required: true,
         },
-        valid: true
+        valid: false,
+        touched: false,
       },
       zipCode: {
         elementType: "input",
@@ -92,7 +95,8 @@ class ContactData extends Component<MyProps, ContactDataState> {
         validation: {
           required: true,
         },
-        valid: true
+        valid: false,
+        touched: false,
       },
       country: {
         elementType: "input",
@@ -102,9 +106,10 @@ class ContactData extends Component<MyProps, ContactDataState> {
         },
         value: "",
         validation: {
-          required: true
+          required: true,
         },
-        valid: true
+        valid: false,
+        touched: false,
       },
       email: {
         elementType: "input",
@@ -114,9 +119,10 @@ class ContactData extends Component<MyProps, ContactDataState> {
         },
         value: "",
         validation: {
-          required: true
+          required: true,
         },
-        valid: true
+        valid: false,
+        touched: false,
       },
       deliveryMethod: {
         elementType: "select",
@@ -126,28 +132,29 @@ class ContactData extends Component<MyProps, ContactDataState> {
             { value: "cheapest", displayValue: "Cheapest" },
           ],
         },
-        value: "",
+        value: "fastest",
         validation: {
-          required: true
+          required: true,
         },
-        formIsValid: false,
-        valid: true
+        valid: true,
       },
     },
     loading: false,
+    formIsValid: false,
   };
 
   orderHandler = (event: { preventDefault: () => void }) => {
     event.preventDefault();
     this.setState({ loading: true });
-    const formData: {[key: string]: {}} = {};
+    const formData: { [key: string]: {} } = {};
     for (let formElementIdentifier in this.state.orderForm) {
-      formData[formElementIdentifier] = this.state.orderForm[formElementIdentifier].value;
+      formData[formElementIdentifier] =
+        this.state.orderForm[formElementIdentifier].value;
     }
     const order = {
       ingredients: this.props.ingredients,
       price: this.props.price,
-      orderData: formData
+      orderData: formData,
     };
     axios
       .post("/orders.json", order)
@@ -160,11 +167,11 @@ class ContactData extends Component<MyProps, ContactDataState> {
       });
   };
 
-  checkValidity(value: string, rules: {required: boolean}) {
+  checkValidity(value: string, rules: { required: boolean }) {
     let isValid = false;
 
     if (rules.required) {
-      isValid = value.trim() !== '';
+      isValid = value.trim() !== "";
     }
 
     return isValid;
@@ -183,15 +190,19 @@ class ContactData extends Component<MyProps, ContactDataState> {
       ...updatedOrderForm[inputIdentifier],
     };
     updatedFormElement.value = event.target.value;
-    updatedFormElement.valid = this.checkValidity(updatedFormElement.value, updatedFormElement.validation);
+    updatedFormElement.valid = this.checkValidity(
+      updatedFormElement.value,
+      updatedFormElement.validation
+    );
+    updatedFormElement.touched = true;
     updatedOrderForm[inputIdentifier] = updatedFormElement;
 
-    let formIsValid = true;
+    let formsIsValid = true;
     for (let inputIdentifier in updatedOrderForm) {
-      formIsValid = updatedOrderForm[inputIdentifier].valid && formIsValid
+      formsIsValid = updatedOrderForm[inputIdentifier].valid && formsIsValid;
     }
 
-    this.setState({orderForm: updatedOrderForm, formIsValid: formIsValid});
+    this.setState({ orderForm: updatedOrderForm, formIsValid: formsIsValid });
   };
 
   render() {
@@ -208,6 +219,7 @@ class ContactData extends Component<MyProps, ContactDataState> {
       <form onSubmit={this.orderHandler}>
         {formElementsArray.map((formElement) => (
           <Input
+            touched={formElement.config.touched}
             key={formElement.id}
             elementType={formElement.config.elementType}
             elementConfig={formElement.config.elementConfig}
@@ -220,7 +232,11 @@ class ContactData extends Component<MyProps, ContactDataState> {
             ) => this.inputChangedHandler(event, formElement.id)}
           />
         ))}
-        <Button clicked={this.orderHandler} btnType="Success">
+        <Button
+          clicked={this.orderHandler}
+          btnType="Success"
+          disabled={!this.state.formIsValid}
+        >
           ORDER
         </Button>
       </form>

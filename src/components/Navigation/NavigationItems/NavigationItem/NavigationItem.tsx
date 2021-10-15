@@ -8,13 +8,9 @@ interface NavigationItemProps {
   children: ReactNode;
 }
 
-
-
 const navigationItem = (props: NavigationItemProps) => (
   <li className={classes.NavigationItem}>
-    <NavLink activeClassName={classes.active}
-      to={props.link}
-      exact>
+    <NavLink activeClassName={classes.active} to={props.link} exact>
       {props.children}
     </NavLink>
   </li>

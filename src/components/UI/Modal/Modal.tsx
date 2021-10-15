@@ -19,9 +19,11 @@ interface ModalProps {
 }
 
 class Modal extends Component<ModalProps> {
-
   shouldComponentUpdate(nextProps: ModalProps, NextState: string) {
-    return nextProps.show !== this.props.show || nextProps.children !== this.props.children;
+    return (
+      nextProps.show !== this.props.show ||
+      nextProps.children !== this.props.children
+    );
   }
 
   render() {
